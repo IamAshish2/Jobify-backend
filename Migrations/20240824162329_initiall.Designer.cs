@@ -12,8 +12,8 @@ using jobify_Backend.Data;
 namespace jobify_Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240824152501_fixCascadeonDelete")]
-    partial class fixCascadeonDelete
+    [Migration("20240824162329_initiall")]
+    partial class initiall
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,11 +37,11 @@ namespace jobify_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CompanyProfileUrl")
+                    b.Property<string>("ContactEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
+                    b.Property<string>("ContactPhone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -58,9 +58,6 @@ namespace jobify_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("JobId"));
 
-                    b.Property<DateTime>("ClosingDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
@@ -72,12 +69,13 @@ namespace jobify_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
+                    b.Property<string>("JobType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PostingDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
@@ -91,28 +89,16 @@ namespace jobify_Backend.Migrations
 
             modelBuilder.Entity("jobify_Backend.Models.JobApplication", b =>
                 {
-                    b.Property<int>("ApplicationId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("JobId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApplicationId"));
-
-                    b.Property<DateTime>("ApplicationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("JobId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("JobApplicationId")
                         .HasColumnType("int");
 
-                    b.HasKey("ApplicationId");
-
-                    b.HasIndex("JobId");
+                    b.HasKey("JobId", "UserId");
 
                     b.HasIndex("UserId");
 
@@ -134,10 +120,6 @@ namespace jobify_Backend.Migrations
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("JobTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -146,19 +128,7 @@ namespace jobify_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("profileUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -174,7 +144,7 @@ namespace jobify_Backend.Migrations
                     b.HasOne("jobify_Backend.Models.Company", "Company")
                         .WithMany("Jobs")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -185,13 +155,11 @@ namespace jobify_Backend.Migrations
                     b.HasOne("jobify_Backend.Models.Job", "Job")
                         .WithMany("JobApplications")
                         .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("jobify_Backend.Models.User", "User")
                         .WithMany("JobApplications")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Job");
