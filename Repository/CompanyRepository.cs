@@ -39,6 +39,11 @@ namespace jobify_Backend.Repository
             return _context.Companies.Where(c => c.CompanyId == id).FirstOrDefault();
         }
 
+        public ICollection<Job> PostedJobs(int companyId)
+        {
+            return _context.Jobs.Where(j => j.CompanyId == companyId).ToList();
+        }
+
         public bool Save()
         {
            var saved = _context.SaveChanges();

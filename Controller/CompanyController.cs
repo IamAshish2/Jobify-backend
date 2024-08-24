@@ -40,6 +40,15 @@ namespace jobify_Backend.Controllers
             return Ok(companyDto);
         }
 
+        // view all the jobs posted by 'X' company
+        [HttpGet("jobs/{companyId}")]
+        public IActionResult GetPostedJobs(int companyId)
+        {
+            if(!_companyRepository.CompanyExists(companyId)) return NotFound();
+            var jobs = _companyRepository.PostedJobs(companyId);
+            return Ok(jobs);
+        }
+
         // POST: api/Companies
         [HttpPost]
         public IActionResult CreateCompany([FromBody] CreateCompanyDto createCompanyDto)

@@ -5,6 +5,7 @@ namespace jobify_Backend.Interfaces
     public interface ICompanyRepository
     {
         ICollection<Company> GetCompanies();
+        ICollection<Job> PostedJobs(int companyId);
         Company GetCompany(int id);
         bool CreateCompany(Company company);
         bool UpdateCompany(Company company);
