@@ -7,8 +7,9 @@ namespace jobify_Backend.Models
         [Key]
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
-        public string Location { get; set; }
-        public string CompanyProfileUrl { get; set; }
+        public string ContactEmail{ get; set; }
+        public string ContactPhone{ get; set; }
+
 
         // Navigation property for the jobs posted by this company
         public ICollection<Job> Jobs { get; set; }

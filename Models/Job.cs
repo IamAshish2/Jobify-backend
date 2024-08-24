@@ -5,13 +5,13 @@ namespace jobify_Backend.Models
     public class Job
     {
         [Key]
-        public int JobId { get; set; }
+            public int JobId { get; set; }
             public string JobTitle { get; set; }
+            public string JobType{ get; set; }
             public string JobDescription { get; set; }
             public string Location { get; set; }
             public decimal Salary { get; set; }
-            public DateTime PostingDate { get; set; }
-            public DateTime ClosingDate { get; set; }
+
 
             // Foreign key to link the job to the company that posted it
             public int CompanyId { get; set; }
