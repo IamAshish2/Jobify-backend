@@ -7,7 +7,5 @@
         public string JobTitle { get; set; }
         public string Location { get; set; }
         public string Bio { get; set; }
-        public string Email { get; set; }
-        public string profileUrl { get; set; }
     }
 }

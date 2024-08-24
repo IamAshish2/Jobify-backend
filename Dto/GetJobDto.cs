@@ -2,9 +2,11 @@
 {
     public class GetJobDto
     {
-        public int Id { get; set; }
-        public string JobName { get; set; }
-        public string Position { get; set; }
-        public string CompanyName { get; set; }
+        public int JobId { get; set; }
+        public string JobTitle { get; set; }
+        public string JobType { get; set; }
+        public string JobDescription { get; set; }
+        public string Location { get; set; }
+        public decimal Salary { get; set; }
     }
 }
