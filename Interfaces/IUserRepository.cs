@@ -5,7 +5,7 @@ namespace jobify_Backend.Interfaces
     public interface IUserRepository
     {
         ICollection<User> GetUsers();
-        //ICollection<Job> GetAppliedJobs(int userId);
+        ICollection<Job> GetAppliedJobs(int userId);
         User GetUser(int userId);
         bool CreateUser(User user);
         bool UpdateUser(User user);

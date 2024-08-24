@@ -116,15 +116,15 @@ namespace jobify_Backend.Controller
             return Ok("User Updated Successfully!");
         }
 
-        //[HttpGet("/applied-jobs/${userId}")]
-        //[ProducesResponseType(200, Type = typeof(List<Job>))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetJobByUserId(int userId)
-        //{
-        //    if(!_userRepository.UserExists(userId)) return NotFound();
-        //    var jobs = _userRepository.GetAppliedJobs(userId);
-        //    if (jobs == null) return BadRequest(ModelState);
-        //    return Ok(jobs);
-        //}
+        [HttpGet("/applied-jobs/${userId}")]
+        [ProducesResponseType(200, Type = typeof(List<Job>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetJobByUserId(int userId)
+        {
+            if (!_userRepository.UserExists(userId)) return NotFound();
+            var jobs = _userRepository.GetAppliedJobs(userId);
+            if (jobs == null) return BadRequest(ModelState);
+            return Ok(jobs);
+        }
     }
 }

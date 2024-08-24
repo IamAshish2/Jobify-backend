@@ -24,11 +24,12 @@ namespace jobify_Backend.Repository
             return Save();
         }
 
-        // check this method properly
-        //public ICollection<Job> GetAppliedJobs(int userId)
-        //{
-        //    return _context.Jobs.Where(j => j.UserId == userId).ToList();
-        //}
+        //check this method properly
+        public ICollection<Job> GetAppliedJobs(int userId)
+        {
+            // get all the job applications by the user id
+            return _context.JobApplications.Where(j => j.UserId== userId).Select(ja => ja.Job).ToList();
+        }
 
         public User GetUser(int userId)
         {
