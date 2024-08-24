@@ -97,7 +97,7 @@ namespace jobify_Backend.Controller
         {
             if (model == null) return BadRequest(ModelState);
             if (!_jobRepository.JobExists(jobId)) return NotFound();
-            if (jobId != model.Id) return BadRequest(ModelState);
+            if (jobId != model.JobId) return BadRequest(ModelState);
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var updatedJob = _mapper.Map<Job>(model);

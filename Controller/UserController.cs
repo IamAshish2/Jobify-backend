@@ -51,8 +51,8 @@ namespace jobify_Backend.Controller
         public IActionResult CreateUser([FromBody] GetUserDto userDto)
         {
             if (userDto == null) return BadRequest(ModelState);
-            var user = _userRepository.GetUsers().Where(u => u.UserName.Trim().ToUpper() == userDto.UserName.Trim().ToUpper() ||
-                        u.Email.Trim().ToUpper() == userDto.Email.Trim().ToUpper()).FirstOrDefault();
+            var user = _userRepository.GetUsers().Where(u => u.UserName.Trim().ToUpper() == userDto.UserName.Trim().ToUpper()).FirstOrDefault();
+                        //u.Email.Trim().ToUpper() == userDto.Email.Trim().ToUpper()).FirstOrDefault();
             if(user != null)
             {
                 ModelState.AddModelError("", "A user with that name  already exists.");
@@ -92,8 +92,8 @@ namespace jobify_Backend.Controller
         [ProducesResponseType(404)]
         public IActionResult UpdateUser(int userId, [FromBody] GetUserDto model)
         {
-            var user = _userRepository.GetUsers().Where(u => u.UserName.Trim().ToUpper() == model.UserName.Trim().ToUpper() ||
-                   u.Email.Trim().ToUpper() == model.Email.Trim().ToUpper()).FirstOrDefault();
+            var user = _userRepository.GetUsers().Where(u => u.UserName.Trim().ToUpper() == model.UserName.Trim().ToUpper()).FirstOrDefault();
+                   //u.Email.Trim().ToUpper() == model.Email.Trim().ToUpper()).FirstOrDefault();
 
             if (user != null)
             {

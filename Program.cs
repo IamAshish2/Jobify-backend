@@ -13,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IJobRepository,JobRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options => 

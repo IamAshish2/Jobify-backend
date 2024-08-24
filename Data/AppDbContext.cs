@@ -14,31 +14,24 @@ namespace jobify_Backend.Data
             public DbSet<Job> Jobs { get; set; }
             public DbSet<JobApplication> JobApplications { get; set; }
 
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
-            {
-             modelBuilder.Entity<Company>()
-                .HasMany(c => c.Jobs)
-                .WithOne(j => j.Company)
-                .HasForeignKey(j => j.CompanyId)
-                .OnDelete(DeleteBehavior.NoAction);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
 
             modelBuilder.Entity<JobApplication>()
-                .HasKey(ja => new { ja.JobId, ja.UserId });
+                .HasKey(ja => new {ja.JobId,ja.UserId});
 
-            // Many-to-One relationship between Job and JobApplication
             modelBuilder.Entity<JobApplication>()
                 .HasOne(ja => ja.Job)
-                .WithMany(j => j.JobApplications)
+                .WithMany(ja => ja.JobApplications)
                 .HasForeignKey(ja => ja.JobId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            // Many-to-One relationship between User and JobApplication
+
             modelBuilder.Entity<JobApplication>()
-                .HasOne(ja => ja.User)
-                .WithMany(u => u.JobApplications)
-                .HasForeignKey(ja => ja.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+              .HasOne(ja => ja.User)
+              .WithMany(ja => ja.JobApplications)
+              .HasForeignKey(ja => ja.UserId)
+              .OnDelete(DeleteBehavior.ClientSetNull);
         }
-        }
-
     }
+ }

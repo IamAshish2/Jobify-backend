@@ -55,7 +55,7 @@ namespace jobify_Backend.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtAction(nameof(GetCompany), new { id = company.CompanyId }, _mapper.Map<CompanyDto>(company));
+            return Ok(company);
         }
 
         // PUT: api/Companies/5
