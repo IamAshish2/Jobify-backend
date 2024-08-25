@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using jobify_Backend.Data;
-using jobify_Backend.Dto;
+using jobify_Backend.Dto.UserDtos;
 using jobify_Backend.Interfaces;
 using jobify_Backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace jobify_Backend.Controller
 {
@@ -48,19 +50,32 @@ namespace jobify_Backend.Controller
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(GetUserDto))]
         [ProducesResponseType(400)]
-        public IActionResult CreateUser([FromBody] GetUserDto userDto)
+        public IActionResult CreateUser([FromBody] SignupDto signupDto)
         {
-            if (userDto == null) return BadRequest(ModelState);
-            var user = _userRepository.GetUsers().Where(u => u.UserName.Trim().ToUpper() == userDto.UserName.Trim().ToUpper()).FirstOrDefault();
-                        //u.Email.Trim().ToUpper() == userDto.Email.Trim().ToUpper()).FirstOrDefault();
-            if(user != null)
+            if (signupDto == null) return BadRequest(ModelState);
+            var user = _userRepository.GetUsers().Where(u => u.UserName.Trim().ToUpper() == signupDto.UserName.Trim().ToUpper() ||
+            u.Email.Trim().ToUpper() == signupDto.Email.Trim().ToUpper()).FirstOrDefault();
+
+            if (user != null)
             {
-                ModelState.AddModelError("", "A user with that name  already exists.");
+                ModelState.AddModelError("", "A user with that name or email  already exists.");
                 return StatusCode(422, ModelState);
             }
 
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(signupDto.Password);
+
+            // mapping the hashed password
+            var userMap = new User
+            {
+                UserName = signupDto.UserName,
+                Email = signupDto.Email,
+                Password = hashedPassword,
+                Role = signupDto.Role,
+            };
+
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var userMap = _mapper.Map<User>(userDto);
+        
+            //var userMap = _mapper.Map<User>(signupDto);
             if (!_userRepository.CreateUser(userMap))
             {
                 ModelState.AddModelError("", "Something went wrong.Please Try again later.");
@@ -92,8 +107,8 @@ namespace jobify_Backend.Controller
         [ProducesResponseType(404)]
         public IActionResult UpdateUser(int userId, [FromBody] GetUserDto model)
         {
-            var user = _userRepository.GetUsers().Where(u => u.UserName.Trim().ToUpper() == model.UserName.Trim().ToUpper()).FirstOrDefault();
-                   //u.Email.Trim().ToUpper() == model.Email.Trim().ToUpper()).FirstOrDefault();
+            var user = _userRepository.GetUsers().Where(u => u.UserName.Trim().ToUpper() == model.UserName.Trim().ToUpper() ||
+            u.Email.Trim().ToUpper() == model.Email.Trim().ToUpper()).FirstOrDefault();
 
             if (user != null)
             {
