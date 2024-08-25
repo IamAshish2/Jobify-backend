@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using jobify_Backend.Data;
+using jobify_Backend.Dto.JobDtos;
 using jobify_Backend.Dto.UserDtos;
 using jobify_Backend.Interfaces;
 using jobify_Backend.Models;
@@ -139,7 +140,21 @@ namespace jobify_Backend.Controller
             if (!_userRepository.UserExists(userId)) return NotFound();
             var jobs = _userRepository.GetAppliedJobs(userId);
             if (jobs == null) return BadRequest(ModelState);
-            return Ok(jobs);
+            var mappedJobs = _mapper.Map<List<GetJobDto>>(jobs);
+            return Ok(mappedJobs);
+        }
+
+        [HttpPost("user/applyToJobs")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult ApplyToJob([FromQuery] int jobId, [FromQuery] int userId)
+        {
+            if (!_userRepository.CreateJobApplication(jobId, userId))
+            {
+                ModelState.AddModelError("", "Something went wrong.Please Try again later.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully Applied to Job");
         }
     }
 }
