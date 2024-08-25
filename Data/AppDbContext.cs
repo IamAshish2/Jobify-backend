@@ -5,14 +5,13 @@ namespace jobify_Backend.Data
 {
     public class AppDbContext:DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
-        {
-            
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options):base(options) {}
             public DbSet<User> Users { get; set; }
             public DbSet<Company> Companies { get; set; }
             public DbSet<Job> Jobs { get; set; }
             public DbSet<JobApplication> JobApplications { get; set; }
+            public DbSet<CompanyJob> CompanyJobs { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +31,23 @@ namespace jobify_Backend.Data
               .WithMany(ja => ja.JobApplications)
               .HasForeignKey(ja => ja.UserId)
               .OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<CompanyJob>()
+                .HasKey(cj => new { cj.CompanyId, cj.JobId });
+
+            modelBuilder.Entity<CompanyJob>()
+                .HasOne(cj => cj.Company)
+                .WithMany(cj => cj.CompanyJobs)
+                .HasForeignKey(cj => cj.CompanyId)
+                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<CompanyJob>()
+             .HasOne(cj => cj.Job)
+             .WithMany(cj => cj.CompanyJobs)
+             .HasForeignKey(cj => cj.JobId)
+              .OnDelete(DeleteBehavior.ClientSetNull);
+
+
         }
     }
  }
