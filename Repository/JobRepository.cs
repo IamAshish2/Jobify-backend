@@ -12,8 +12,21 @@ namespace jobify_Backend.Repository
         {
             _context = context;
         }
-        public bool CreateJob(Job job)
+        public bool CreateJob(int companyId, Job job)
         {
+         
+            var company = _context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
+            
+            if (company == null) return false;
+
+            var jobOfCompany = new CompanyJob
+            {
+                Job = job,
+                Company = company
+            };
+
+            _context.Add(jobOfCompany);
+
             _context.Add(job);
             return Save();
         }
