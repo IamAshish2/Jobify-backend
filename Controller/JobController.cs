@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using jobify_Backend.Dto;
+using jobify_Backend.Dto.JobDtos;
 using jobify_Backend.Interfaces;
 using jobify_Backend.Models;
 using jobify_Backend.Repository;
@@ -48,21 +48,13 @@ namespace jobify_Backend.Controller
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(GetJobDto))]
         [ProducesResponseType(400)]
-        public IActionResult CreateJob([FromBody] GetJobDto jobDto)
+        public IActionResult CreateJob([FromQuery] int companyId,[FromBody] CreateJobDto jobDto)   
         {
             if (jobDto == null) return BadRequest(ModelState);
-            // a company can post a  job one time
-            //var job= _jobRepository.GetJobs().Where(j => j.JobTitle.Trim().ToUpper() == jobDto.JobName.Trim().ToUpper()
-            //        && j.CompanyName.Trim().ToUpper() == jobDto.CompanyName.Trim().ToUpper()).FirstOrDefault();
-            //if (job != null)
-            //{
-            //    ModelState.AddModelError("", "A Job is already posted for the position by your company.");
-            //    return StatusCode(422, ModelState);
-            //}
-
+           
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var jobMap = _mapper.Map<Job>(jobDto);
-            if (!_jobRepository.CreateJob(jobMap))
+            if (!_jobRepository.CreateJob(companyId,jobMap))
             {
                 ModelState.AddModelError("", "Something went wrong.Please Try again later.");
                 return StatusCode(500, ModelState);
@@ -74,7 +66,7 @@ namespace jobify_Backend.Controller
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteUser(int jobId)
+        public IActionResult DeleteJob(int jobId)
         {
             if (!_jobRepository.JobExists(jobId)) return NotFound();
             var job = _jobRepository.GetJob(jobId);
@@ -93,7 +85,7 @@ namespace jobify_Backend.Controller
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateUser(int jobId, [FromBody] GetJobDto model)
+        public IActionResult UpdateJob(int jobId, [FromBody] GetJobDto model)
         {
             if (model == null) return BadRequest(ModelState);
             if (!_jobRepository.JobExists(jobId)) return NotFound();

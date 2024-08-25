@@ -1,4 +1,4 @@
-﻿namespace jobify_Backend.Dto
+﻿namespace jobify_Backend.Dto.JobDtos
 {
     public class GetJobDto
     {

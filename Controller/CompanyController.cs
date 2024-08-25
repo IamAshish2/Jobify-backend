@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using jobify_Backend.Interfaces;
 using jobify_Backend.Models;
 using jobify_Backend.Dto.CompanyDtos;
+using jobify_Backend.Dto.JobDtos;
 
 namespace jobify_Backend.Controllers
 {
@@ -46,7 +47,8 @@ namespace jobify_Backend.Controllers
         {
             if(!_companyRepository.CompanyExists(companyId)) return NotFound();
             var jobs = _companyRepository.PostedJobs(companyId);
-            return Ok(jobs);
+            var mappedJobs = _mapper.Map<List<GetJobDto>>(jobs);
+            return Ok(mappedJobs);
         }
 
         // POST: api/Companies

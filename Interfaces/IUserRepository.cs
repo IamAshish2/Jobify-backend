@@ -6,6 +6,8 @@ namespace jobify_Backend.Interfaces
     {
         ICollection<User> GetUsers();
         ICollection<Job> GetAppliedJobs(int userId);
+        //Apply to Job
+        bool CreateJobApplication(int jobId,int userId);
         User GetUser(int userId);
         bool CreateUser(User user);
         bool UpdateUser(User user);

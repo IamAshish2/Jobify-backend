@@ -12,6 +12,21 @@ namespace jobify_Backend.Repository
         {
             _context = context;
         }
+
+        public bool CreateJobApplication(int jobId, int userId)
+        {
+            var job = _context.Jobs.Where(j => j.JobId == jobId).FirstOrDefault();
+            var user = _context.Users.Where(u => u.UserId == userId).FirstOrDefault();
+            if (job == null) return false;
+            var appliedJob = new JobApplication
+            {
+                Job = job,
+                User = user,
+            };
+            _context.Add(appliedJob);
+            return Save();
+        }
+
         public bool CreateUser(User user)
         {
             _context.Add(user);

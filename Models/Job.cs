@@ -12,12 +12,9 @@ namespace jobify_Backend.Models
             public string Location { get; set; }
             public decimal Salary { get; set; }
 
-
-            // Foreign key to link the job to the company that posted it
-            public int CompanyId { get; set; }
-            public Company Company { get; set; }
-
-            // Navigation property for the applications received for this job
+            // collection of companies that provide jobs
+            public ICollection<CompanyJob> CompanyJobs { get; set; }
+            //Collection of job applications for a certain job
             public ICollection<JobApplication> JobApplications { get; set; }
         }
 

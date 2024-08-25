@@ -10,9 +10,8 @@ namespace jobify_Backend.Models
         public string ContactEmail{ get; set; }
         public string ContactPhone{ get; set; }
 
-
         // Navigation property for the jobs posted by this company
-        public ICollection<Job> Jobs { get; set; }
+        public ICollection<CompanyJob> CompanyJobs { get; set; }
     }
 
 }

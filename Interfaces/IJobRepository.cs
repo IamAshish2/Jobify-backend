@@ -7,7 +7,8 @@ namespace jobify_Backend.Interfaces
         ICollection<Job> GetJobs();
         Job GetJob(int id);
         bool DeleteJob(Job job);
-        bool CreateJob(Job job);
+        // Create a job 
+        bool CreateJob(int companyId, Job job);
         bool UpdateJob(Job job);
         bool JobExists(int JobId);
         bool Save();

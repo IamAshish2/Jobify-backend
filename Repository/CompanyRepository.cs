@@ -41,7 +41,7 @@ namespace jobify_Backend.Repository
 
         public ICollection<Job> PostedJobs(int companyId)
         {
-            return _context.Jobs.Where(j => j.CompanyId == companyId).ToList();
+            return _context.CompanyJobs.Where(j => j.CompanyId == companyId).Select(j => j.Job).ToList();
         }
 
         public bool Save()
