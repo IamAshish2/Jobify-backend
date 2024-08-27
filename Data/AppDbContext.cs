@@ -30,7 +30,7 @@ namespace jobify_Backend.Data
               .HasOne(ja => ja.User)
               .WithMany(ja => ja.JobApplications)
               .HasForeignKey(ja => ja.UserId)
-              .OnDelete(DeleteBehavior.ClientSetNull);
+              .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<CompanyJob>()
                 .HasKey(cj => new { cj.CompanyId, cj.JobId });

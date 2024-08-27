@@ -40,10 +40,18 @@ namespace jobify_Backend.Controller
             if (currentUser != null && isPasswordValid)
             {
                 var token = _token.GenerateToken(currentUser);
-                return Ok(token);
+                return Ok(new {token,currentUser.UserId,currentUser.Role});
             }
             return NotFound("User Not Found");
             
+        }
+
+
+        [Authorize]
+        [HttpGet("verify-token")]
+        public IActionResult VerifyToken()
+        {
+            return Ok("User Authorized");
         }
 
 
